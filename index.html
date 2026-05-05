@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cazalo.cl — Las mejores ofertas de Chile</title>
+<meta name="description" content="Los mejores productos seleccionados para ti. Tecnología, gaming, hogar y más — todo con envío rápido desde MercadoLibre Chile.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #1e1e2e;
+    --accent: #f5c542;
+    --accent2: #ff6b35;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --green: #22c55e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--text); }
+
+  nav .tagline {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 80px 5% 60px;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(245,197,66,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 110px);
+    line-height: 0.9;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero p {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.25);
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  /* CATEGORIES BAR */
+  .cats {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 20px 5%;
+    scrollbar-width: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cats::-webkit-scrollbar { display: none; }
+
+  .cat-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    text-decoration: none;
+    background: var(--surface);
+  }
+
+  .cat-pill:hover, .cat-pill.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(245,197,66,0.06);
+  }
+
+  /* SECTION */
+  .section {
+    padding: 48px 5%;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .section-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: var(--text);
+  }
+
+  .section-header .count {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .section-header .ver-mas {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  /* PRODUCT GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .card:hover {
+    border-color: rgba(245,197,66,0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(245,197,66,0.1);
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    background: var(--accent2);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .card-badge.hot { background: var(--accent2); }
+  .card-badge.new { background: #6366f1; }
+  .card-badge.deal { background: var(--green); }
+
+  .card-img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: #1a1a24;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+  }
+
+  .card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card-body {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .card-category {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .card-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+  }
+
+  .price-from {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .price-main {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .card-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    background: var(--accent);
+    color: #0a0a0f;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-top: 1px solid var(--border);
+    transition: background 0.2s;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .card-cta:hover { background: #ffd166; }
+
+  .card-cta svg { width: 14px; height: 14px; }
+
+  /* STATS STRIP */
+  .stats {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 5%;
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 5%;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--accent);
+    letter-spacing: 2px;
+  }
+
+  footer p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 400px;
+  }
+
+  .footer-ml {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .ml-badge {
+    background: #ffe600;
+    color: #000;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero h1, .hero p, .hero-badge {
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-badge { animation-delay: 0.1s; }
+  .hero h1 { animation-delay: 0.2s; }
+  .hero p { animation-delay: 0.35s; }
+
+  .card {
+    animation: fadeUp 0.5s ease both;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .stats { gap: 30px; }
+    footer { flex-direction: column; text-align: center; }
+    nav .tagline { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">cazalo<span>.cl</span></a>
+  <span class="tagline">Ofertas seleccionadas · MercadoLibre Chile</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Actualizado hoy</div>
+  <h1>TODO LO QUE<em>NECESITAS</em>ENCONTRADO</h1>
+  <p>Seleccionamos los productos más vendidos de Chile para que no pierdas tiempo buscando. Directo a MercadoLibre, con envío rápido.</p>
+</section>
+
+<!-- CATEGORIES -->
+<div class="cats">
+  <a href="#tech" class="cat-pill active">📱 Tecnología</a>
+  <a href="#gaming" class="cat-pill">🎮 Gaming</a>
+  <a href="#audio" class="cat-pill">🎧 Audio</a>
+  <a href="#hogar" class="cat-pill">🏠 Hogar</a>
+  <a href="#fitness" class="cat-pill">💪 Fitness</a>
+  <a href="#belleza" class="cat-pill">✨ Cuidado Personal</a>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">8%</div><div class="stat-label">Comisión máx.</div></div>
+  <div class="stat"><div class="stat-num">24H</div><div class="stat-label">Envío Express</div></div>
+  <div class="stat"><div class="stat-num">+50</div><div class="stat-label">Productos top</div></div>
+</div>
+
+<!-- TECH -->
+<section class="section" id="tech">
+  <div class="section-header">
+    <h2>📱 Tecnología</h2>
+    <span class="count">Lo más vendido</span>
+    <a href="https://www.mercadolibre.cl/c/tecnologia" class="ver-mas" target="_blank">Ver todo →</a>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.05s">
+      <span class="card-badge hot">🔥 Top</span>
+      <div class="card-img">📱</div>
+      <div class="card-body">
+        <span class="card-category">Celulares</span>
+        <span class="card-title">Cargador Carga Rápida 65W USB-C — Compatível iPhone y Android</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$8.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.1s">
+      <span class="card-badge deal">Oferta</span>
+      <div class="card-img">🔋</div>
+      <div class="card-body">
+        <span class="card-category">Accesorios</span>
+        <span class="card-title">Power Bank 20,000 mAh Carga Rápida — 2 puertos USB</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$18.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.15s">
+      <div class="card-img">🛡️</div>
+      <div class="card-body">
+        <span class="card-category">Protección</span>
+        <span class="card-title">Pack Protector Pantalla + Case — Samsung / iPhone (varios modelos)</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$4.490</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.2s">
+      <span class="card-badge new">Nuevo</span>
+      <div class="card-img">⌚</div>
+      <div class="card-body">
+        <span class="card-category">Wearables</span>
+        <span class="card-title">Smartwatch Deportivo — GPS, frecuencia cardíaca, 7 días batería</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$34.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- GAMING -->
+<section class="section" id="gaming">
+  <div class="section-header">
+    <h2>🎮 Gaming</h2>
+    <span class="count">Los más comprados</span>
+    <a href="https://www.mercadolibre.cl/c/videojuegos" class="ver-mas" target="_blank">Ver todo →</a>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.05s">
+      <span class="card-badge hot">🔥 Top</span>
+      <div class="card-img">🕹️</div>
+      <div class="card-body">
+        <span class="card-category">Controles</span>
+        <span class="card-title">Control Inalámbrico PC / PlayStation — compatible Steam</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$22.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.1s">
+      <div class="card-img">🖥️</div>
+      <div class="card-body">
+        <span class="card-category">Periféricos</span>
+        <span class="card-title">Mouse Gaming RGB 6400 DPI — Ergonómico, cable trenzado</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$12.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.15s">
+      <span class="card-badge deal">Oferta</span>
+      <div class="card-img">⌨️</div>
+      <div class="card-body">
+        <span class="card-category">Teclados</span>
+        <span class="card-title">Teclado Mecánico Gaming — Switch Red, retroiluminado RGB</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$28.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- AUDIO -->
+<section class="section" id="audio">
+  <div class="section-header">
+    <h2>🎧 Audio</h2>
+    <span class="count">Siempre en tendencia</span>
+    <a href="https://www.mercadolibre.cl/c/audio-y-musica" class="ver-mas" target="_blank">Ver todo →</a>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.05s">
+      <span class="card-badge hot">🔥 #1 Vendido</span>
+      <div class="card-img">🎧</div>
+      <div class="card-body">
+        <span class="card-category">Auriculares</span>
+        <span class="card-title">Auriculares TWS Bluetooth 5.3 — ANC, 30h batería, carga rápida</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$14.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.1s">
+      <div class="card-img">🔊</div>
+      <div class="card-body">
+        <span class="card-category">Parlantes</span>
+        <span class="card-title">Parlante Bluetooth Portátil IP67 — 20W, resistente al agua</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$24.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.15s">
+      <span class="card-badge new">Nuevo</span>
+      <div class="card-img">🎙️</div>
+      <div class="card-body">
+        <span class="card-category">Micrófonos</span>
+        <span class="card-title">Micrófono USB Condensador — Para streaming, podcast y home office</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$19.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- HOGAR -->
+<section class="section" id="hogar">
+  <div class="section-header">
+    <h2>🏠 Hogar Inteligente</h2>
+    <span class="count">Viral en redes</span>
+    <a href="https://www.mercadolibre.cl/c/electrodomesticos" class="ver-mas" target="_blank">Ver todo →</a>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.05s">
+      <span class="card-badge hot">🔥 Viral</span>
+      <div class="card-img">🤖</div>
+      <div class="card-body">
+        <span class="card-category">Limpieza</span>
+        <span class="card-title">Robot Aspirador — Mapeo láser, control App, compatible Alexa</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$79.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.1s">
+      <div class="card-img">💡</div>
+      <div class="card-body">
+        <span class="card-category">Iluminación</span>
+        <span class="card-title">Ampolleta LED Inteligente WiFi — 16M colores, control por voz</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$7.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.15s">
+      <span class="card-badge deal">Oferta</span>
+      <div class="card-img">☕</div>
+      <div class="card-body">
+        <span class="card-category">Cocina</span>
+        <span class="card-title">Freidora de Aire 5L — Sin aceite, 8 programas, pantalla digital</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$49.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FITNESS -->
+<section class="section" id="fitness">
+  <div class="section-header">
+    <h2>💪 Fitness</h2>
+    <span class="count">Compra constante</span>
+    <a href="https://www.mercadolibre.cl/c/deportes-y-fitness" class="ver-mas" target="_blank">Ver todo →</a>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.05s">
+      <span class="card-badge hot">🔥 Top</span>
+      <div class="card-img">🏋️</div>
+      <div class="card-body">
+        <span class="card-category">Suplementos</span>
+        <span class="card-title">Proteína Whey 1kg — Concentrada, 24g proteína por porción</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$19.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.1s">
+      <div class="card-img">🧘</div>
+      <div class="card-body">
+        <span class="card-category">Equipamiento</span>
+        <span class="card-title">Set Bandas Elásticas Resistencia — 5 niveles, con guía de ejercicios</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$9.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- BELLEZA -->
+<section class="section" id="belleza">
+  <div class="section-header">
+    <h2>✨ Cuidado Personal</h2>
+    <span class="count">Compra recurrente</span>
+    <a href="https://www.mercadolibre.cl/c/belleza-y-cuidado-personal" class="ver-mas" target="_blank">Ver todo →</a>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.05s">
+      <span class="card-badge hot">🔥 Viral</span>
+      <div class="card-img">🪥</div>
+      <div class="card-body">
+        <span class="card-category">Higiene</span>
+        <span class="card-title">Cepillo Dental Eléctrico — 5 modos, cabezal reemplazable, waterproof</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$18.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <a class="card" href="REEMPLAZAR_CON_TU_LINK_AFILIADO" target="_blank" style="animation-delay:0.1s">
+      <div class="card-img">💆</div>
+      <div class="card-body">
+        <span class="card-category">Bienestar</span>
+        <span class="card-title">Masajeador Eléctrico Cervical — Calor infrarrojo, 3 intensidades</span>
+        <div class="card-price">
+          <span class="price-from">Desde</span>
+          <span class="price-main">$22.990</span>
+        </div>
+      </div>
+      <div class="card-cta">
+        Ver en MercadoLibre
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">cazalo.cl</div>
+    <p style="margin-top:8px">© 2026 cazalo.cl — Todos los derechos reservados.</p>
+  </div>
+  <p>Este sitio participa en el programa de afiliados de MercadoLibre Chile. Al comprar a través de nuestros links podemos recibir una comisión sin costo adicional para ti.</p>
+  <div class="footer-ml">
+    Partner oficial <span class="ml-badge">ML</span>
+  </div>
+</footer>
+
+</body>
+</html>
